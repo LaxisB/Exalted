@@ -25,18 +25,6 @@ inputs =
   |> Enum.to_list()
   |> Enum.flat_map(fn _ -> raw_list end)
 
-# warm up with 100k lines
-inputs
-|> Stream.take(100_000)
-|> Flow.from_enumerable()
-|> Flow.map(fn list ->
-  [
-    LogReader.read_naive(list, LogReader.Adapter.Dummy),
-    LogReader.read_parsec(list, LogReader.Adapter.Dummy)
-  ]
-end)
-|> Flow.run()
-
 Benchee.run(
   %{
     "custom implementation" => fn count ->
@@ -50,14 +38,11 @@ Benchee.run(
       |> LogReader.read_parsec(LogReader.Adapter.Dummy)
     end
   },
-  warmup: 0,
+  warmup: 20,
+  time: 60,
   inputs: %{
     "10000 rows" => 10_000,
     "100000 rows" => 100_000,
     "1000000 rows" => 1_000_000
-  },
-  load: "#{file}.benchee",
-  save: [
-    path: "#{file}.benchee"
-  ]
+  }
 )
