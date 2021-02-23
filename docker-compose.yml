@@ -1,0 +1,8 @@
+services:
+  database:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: phoenix
+      POSTGRES_PASSWORD: phoenix
+    ports:
+     - 5432:5432
