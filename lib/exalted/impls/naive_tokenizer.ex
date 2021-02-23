@@ -1,4 +1,4 @@
-defmodule Exalted.LogReader.Naive.Tokenizer do
+defmodule Exalted.LogReader.NaiveTokenizer do
   @moduledoc """
   tokenizes a line in the combatlog. The log has one record per line with the following general structure of `<timestamp> <event>,<values>`
   where:
@@ -110,32 +110,36 @@ defmodule Exalted.LogReader.Naive.Tokenizer do
     end
   end
 
-  def tokenize_value("Creature-" <> _rest = value) do
+  defp tokenize_value("BNetAccount-" <> _rest = value) do
     {:guid, value}
   end
 
-  def tokenize_value("GameObject-" <> _rest = value) do
+  defp tokenize_value("Creature-" <> _rest = value) do
     {:guid, value}
   end
 
-  def tokenize_value("Pet-" <> _rest = value) do
+  defp tokenize_value("GameObject-" <> _rest = value) do
     {:guid, value}
   end
 
-  def tokenize_value("Player-" <> _rest = value) do
+  defp tokenize_value("Pet-" <> _rest = value) do
     {:guid, value}
   end
 
-  def tokenize_value("Vehicle-" <> _rest = value) do
+  defp tokenize_value("Player-" <> _rest = value) do
     {:guid, value}
   end
 
-  def tokenize_value("Vignette-" <> _rest = value) do
+  defp tokenize_value("Vehicle-" <> _rest = value) do
+    {:guid, value}
+  end
+
+  defp tokenize_value("Vignette-" <> _rest = value) do
     {:guid, value}
   end
 
   # handle inlined strings
-  def tokenize_value("\"" <> _ = value) do
+  defp tokenize_value("\"" <> _ = value) do
     case String.ends_with?(value, "\"") do
       true -> {:string, String.slice(value, 1..-2)}
       false -> {:unknown, value}
@@ -143,7 +147,7 @@ defmodule Exalted.LogReader.Naive.Tokenizer do
   end
 
   # handle bitmasks
-  def tokenize_value("0x" <> rest = value) do
+  defp tokenize_value("0x" <> rest = value) do
     case String.match?(value, match_mask()) do
       true ->
         {masked_value, _} = Integer.parse(rest, 16)
@@ -154,7 +158,7 @@ defmodule Exalted.LogReader.Naive.Tokenizer do
     end
   end
 
-  def tokenize_value(value) do
+  defp tokenize_value(value) do
     case {Integer.parse(value, 10), String.match?(value, match_constant())} do
       {{value, ""}, _} -> {:integer, value}
       {_, true} -> {:constant, value}
@@ -164,8 +168,8 @@ defmodule Exalted.LogReader.Naive.Tokenizer do
 
   def record_separator, do: :binary.compile_pattern("\n")
   def value_separator, do: :binary.compile_pattern(",")
-  defp parens_open, do: :binary.compile_pattern("(")
-  defp parens_close, do: :binary.compile_pattern(")")
+  def parens_open, do: :binary.compile_pattern("(")
+  def parens_close, do: :binary.compile_pattern(")")
   def match_mask, do: Regex.compile!("0x[a-f0-f]+")
   def match_constant, do: Regex.compile!("[A-Z](_[A-Z])*")
 end
