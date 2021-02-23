@@ -1,4 +1,4 @@
-defmodule Exalted.LogReader.Tokenizer do
+defmodule Exalted.LogReader.Naive.Tokenizer do
   @moduledoc """
   tokenizes a line in the combatlog. The log has one record per line with the following general structure of `<timestamp> <event>,<values>`
   where:
@@ -145,8 +145,12 @@ defmodule Exalted.LogReader.Tokenizer do
   # handle bitmasks
   def tokenize_value("0x" <> rest = value) do
     case String.match?(value, match_mask()) do
-      true -> {:mask, Integer.parse(rest, 16)}
-      false -> {:unknown, value}
+      true ->
+        {masked_value, _} = Integer.parse(rest, 16)
+        {:mask, masked_value}
+
+      false ->
+        {:unknown, value}
     end
   end
 
@@ -162,6 +166,6 @@ defmodule Exalted.LogReader.Tokenizer do
   def value_separator, do: :binary.compile_pattern(",")
   defp parens_open, do: :binary.compile_pattern("(")
   defp parens_close, do: :binary.compile_pattern(")")
-  def match_mask, do: Regex.compile!("0x\d+/")
+  def match_mask, do: Regex.compile!("0x[a-f0-f]+")
   def match_constant, do: Regex.compile!("[A-Z](_[A-Z])*")
 end

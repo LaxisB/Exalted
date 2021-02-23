@@ -1,4 +1,4 @@
-defmodule Exalted.LogReader.Parser do
+defmodule Exalted.LogReader.Naive.Parser do
   def parse(record) do
     {:ok, record}
   end
