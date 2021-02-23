@@ -51,7 +51,6 @@ Benchee.run(
     end
   },
   warmup: 0,
-  time: 60,
   inputs: %{
     "10000 rows" => 10_000,
     "100000 rows" => 100_000,
