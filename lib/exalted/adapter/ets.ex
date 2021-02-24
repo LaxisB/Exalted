@@ -1,9 +1,9 @@
 defmodule Exalted.LogReader.Adapter.ETS do
-  use Exalted.LogReader.Adapter
+  @behaviour Exalted.LogReader.Adapter
 
   @impl true
   def init([]) do
-    s =
+    Agent.start(fn ->
       :ets.new(:parse_results, [
         :ordered_set,
         :compressed,
@@ -11,23 +11,27 @@ defmodule Exalted.LogReader.Adapter.ETS do
         {:read_concurrency, true},
         {:write_concurrency, true}
       ])
-
-    {:ok, s}
+    end)
   end
 
   @impl true
   def terminate(_reason, table) do
-    :ets.delete(table)
+    Agent.update(table, fn ref -> :ets.delete(ref) end)
+    Agent.stop(table)
   end
 
   @impl true
   def get_state(table) do
-    :ets.tab2list(table)
+    Agent.get(table, fn ref -> :ets.tab2list(ref) end)
   end
 
   @impl true
   def handle_record(record, index, table) do
-    :ets.insert(table, {index, record})
+    Agent.update(table, fn ref ->
+      :ets.insert(ref, {index, record})
+      ref
+    end)
+
     table
   end
 end
