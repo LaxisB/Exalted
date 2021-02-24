@@ -47,7 +47,9 @@ defmodule Exalted.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:flow, "~> 1.1.0"},
       {:nimble_parsec, "~> 1.1.0"},
-      {:benchee, "~> 1.0.1"}
+      {:benchee, "~> 1.0.1"},
+      {:eternal, "~> 1.2.2"},
+      {:elixir_uuid, "~> 1.2.1"}
     ]
   end
 

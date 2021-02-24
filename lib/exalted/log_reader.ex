@@ -46,9 +46,9 @@ defmodule Exalted.LogReader do
     {:ok, pid} = GenServer.start_link(m, a)
 
     items =
-      case is_list(blob) do
-        true -> blob
-        false -> [blob]
+      case is_binary(blob) do
+        true -> [blob]
+        false -> blob
       end
 
     items
@@ -59,14 +59,13 @@ defmodule Exalted.LogReader do
     |> Flow.partition()
     |> Flow.map(fn {v, i} -> {ParsecTokenizer.tokenize(v), i} end)
     |> Flow.map(fn {v, i} ->
-      GenServer.cast(pid, {:handle_record, v, i})
+      # use call to prevent race conditions
+      GenServer.call(pid, {:handle_record, v, i})
     end)
     |> Flow.run()
 
     value = GenServer.call(pid, :get_state)
-
     GenServer.stop(pid)
-
     value
   end
 end

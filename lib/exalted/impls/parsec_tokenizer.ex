@@ -2,9 +2,13 @@ defmodule Exalted.LogReader.ParsecTokenizer do
   import NimbleParsec
   alias Exalted.LogReader.NaiveTokenizer
 
-  quoted_value = ignore(string("\"")) |> utf8_string([{:not, ?"}], min: 1) |> ignore(string("\""))
+  defcombinatorp(
+    :quoted_value,
+    ignore(string("\"")) |> utf8_string([{:not, ?"}], min: 1) |> ignore(string("\""))
+  )
 
-  timestamp =
+  defcombinatorp(
+    :timestamp,
     integer(min: 1, max: 2)
     |> ignore(string("/"))
     |> integer(min: 1, max: 2)
@@ -18,6 +22,7 @@ defmodule Exalted.LogReader.ParsecTokenizer do
     |> integer(3)
     |> tag(:timestamp)
     |> map({:parse_token, []})
+  )
 
   defcombinatorp(
     :event_literal,
@@ -29,14 +34,14 @@ defmodule Exalted.LogReader.ParsecTokenizer do
   defcombinatorp(
     :value_literal,
     choice([
-      quoted_value |> tag(:quoted_value) |> map({:parse_token, []}),
-      utf8_string([{:not, ?,}, {:not, ?(}, {:not, ?)}], min: 1)
+      parsec(:quoted_value) |> tag(:quoted_value) |> map({:parse_token, []}),
+      utf8_string([{:not, ?,}], min: 1)
       |> tag(:raw_value)
       |> map({:parse_token, []})
     ])
   )
 
-  defcombinator(
+  defcombinatorp(
     :group,
     ignore(string("("))
     |> repeat(parsec(:value) |> ignore(optional(string(","))))
@@ -45,7 +50,7 @@ defmodule Exalted.LogReader.ParsecTokenizer do
     |> map({:parse_token, []})
   )
 
-  defcombinator(
+  defcombinatorp(
     :value,
     choice([
       parsec(:group),
@@ -53,7 +58,7 @@ defmodule Exalted.LogReader.ParsecTokenizer do
     ])
   )
 
-  defcombinator(
+  defcombinatorp(
     :payload,
     repeat(
       lookahead_not(eos())
@@ -65,7 +70,7 @@ defmodule Exalted.LogReader.ParsecTokenizer do
   )
 
   line =
-    timestamp
+    parsec(:timestamp)
     |> ignore(string("  "))
     |> parsec(:event_literal)
     |> parsec(:payload)
@@ -73,7 +78,7 @@ defmodule Exalted.LogReader.ParsecTokenizer do
     |> tag(:line)
     |> map(:parse_line)
 
-  defparsec(:parse, line)
+  defparsec(:parse, line, inline: true)
 
   def tokenize(blob) do
     blob

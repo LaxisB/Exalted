@@ -1,21 +1,25 @@
 defmodule Exalted.LogReader.Adapter.Dummy do
-  use Exalted.LogReader.Adapter
+  @moduledoc """
+  A Dummy Adapter that basically thows away everything it receives. Used purely for benchmarking the parser
+  """
+  alias Exalted.LogReader.Adapter
+  @behaviour Adapter
 
-  @impl true
+  @impl Adapter
   def init([]) do
     {:ok, []}
   end
 
-  @impl true
+  @impl Adapter
   def terminate(_reason, _state) do
   end
 
-  @impl true
+  @impl Adapter
   def get_state(_state) do
     []
   end
 
-  @impl true
+  @impl Adapter
   def handle_record(_record, _index, _state) do
   end
 end

@@ -18,8 +18,7 @@ defmodule Exalted.LogReader.Adapter.File do
 
   @impl true
   def get_state({_, name}) do
-    File.stream!(name)
-    |> Enum.map(&Jason.decode!(&1))
+    name
   end
 
   @impl true
@@ -27,14 +26,15 @@ defmodule Exalted.LogReader.Adapter.File do
     :ok = IO.write(handle, Jason.encode!(record) <> "\n")
     state
   end
-end
 
-defmodule Jason.TupleEncoder do
-  defimpl Jason.Encoder, for: Tuple do
-    def encode(value, opts) do
-      value
-      |> Tuple.to_list()
-      |> Jason.Encoder.List.encode(opts)
+  # Satisfy Jason
+  defmodule TupleEncoder do
+    defimpl Jason.Encoder, for: Tuple do
+      def encode(value, opts) do
+        value
+        |> Tuple.to_list()
+        |> Jason.Encoder.List.encode(opts)
+      end
     end
   end
 end
