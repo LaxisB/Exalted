@@ -1,0 +1,11 @@
+/home/brixl/projects/private/exalted/native/exalted_parser/target/rls/debug/deps/librustler_codegen-d463a10e21d9ccff.so: /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/lib.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/ex_struct.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/map.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/record.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/tuple.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/unit_enum.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/untagged_enum.rs
+
+/home/brixl/projects/private/exalted/native/exalted_parser/target/rls/debug/deps/rustler_codegen-d463a10e21d9ccff.d: /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/lib.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/ex_struct.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/map.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/record.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/tuple.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/unit_enum.rs /home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/untagged_enum.rs
+
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/lib.rs:
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/ex_struct.rs:
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/map.rs:
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/record.rs:
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/tuple.rs:
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/unit_enum.rs:
+/home/brixl/.cargo/registry/src/github.com-1ecc6299db9ec823/rustler_codegen-0.21.1/src/untagged_enum.rs:
